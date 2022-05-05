@@ -2,6 +2,7 @@
 
 set -eou pipefail
 
+git config --global --add safe.directory /github/workspace
 # simple changelog: get all commits beetween 2 tags and put them into file
 
 echo "Commits: " > changelog.md
