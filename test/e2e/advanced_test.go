@@ -8,7 +8,6 @@ import (
 	. "github.com/onsi/gomega/gbytes"
 
 	"github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/actions"
-	"github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/actions/deploy"
 	kubecli "github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/cli/kubecli"
 
 	"github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/model"
@@ -48,9 +47,9 @@ var _ = Describe("Deploy cluster", Label("cluster-advanced-ns"), func() {
 	DescribeTable("Namespaced operators working only with its own namespace with different configuration",
 		func(test model.TestDataProvider) {
 			data = test
-			advancedMainCycle(test)
+			mainCycle(test)
 		},
-		Entry("Trial - Simplest configuration with no backup and no user", Label("ns-crd"),
+		Entry("Trial - Simplest configuration with no backup", Label("ns-crd"),
 			model.NewTestDataProvider(
 				"operator-ns-crd",
 				model.AProject{},
@@ -66,22 +65,3 @@ var _ = Describe("Deploy cluster", Label("cluster-advanced-ns"), func() {
 		),
 	)
 })
-
-func advancedMainCycle(data model.TestDataProvider) {
-	actions.PrepareUsersConfigurations(&data)
-	deploy.NamespacedOperator(&data)
-
-	By("Deploy Advanced Resources", func() {
-		actions.DeployAdvancedResourcesAction(&data)
-		Expect(data.Resources.ProjectID).ShouldNot(BeEmpty())
-	})
-
-	By("Additional check for the current data set", func() {
-		for _, check := range data.Actions {
-			check(&data)
-		}
-	})
-	By("Delete Advanced Resources", func() {
-		actions.DeleteAdvancedResources(&data)
-	})
-}
