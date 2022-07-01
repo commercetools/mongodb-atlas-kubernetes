@@ -14,7 +14,7 @@ import (
 	"github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/utils"
 )
 
-var _ = Describe("Deploy cluster", Label("cluster-advanced-ns"), func() {
+var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 	var data model.TestDataProvider
 
 	BeforeEach(func() {
@@ -59,7 +59,7 @@ var _ = Describe("Deploy cluster", Label("cluster-advanced-ns"), func() {
 				[]model.DBUser{},
 				30000,
 				[]func(*model.TestDataProvider){
-					actions.DeleteCRDs,
+					actions.DeleteClusterCRD,
 				},
 			),
 		),

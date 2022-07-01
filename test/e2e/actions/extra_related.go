@@ -17,10 +17,10 @@ const (
 	atlasClusterCRD = "atlasdeployments.atlas.mongodb.com"
 )
 
-func DeleteCRDs(data *model.TestDataProvider) {
+func DeleteClusterCRD(data *model.TestDataProvider) {
 	By(fmt.Sprintf("Deleting %s", atlasClusterCRD), func() {
 		kubecli.DeleteClusterResource("crd", atlasClusterCRD)
-		// TODO: check CRD deletion
+
 		By("Checking Cluster still existed", func() {
 			state := mongocli.GetClusterStateName(data.Resources.ProjectID, data.Resources.Clusters[0].Spec.DeploymentSpec.Name)
 			Expect(state).ShouldNot(Equal("DELETING"), "Cluster is being deleted despite the keep annotation")
