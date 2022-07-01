@@ -23,7 +23,7 @@ func DeleteCRDs(data *model.TestDataProvider) {
 		// TODO: check CRD deletion
 		By("Checking Cluster still existed", func() {
 			state := mongocli.GetClusterStateName(data.Resources.ProjectID, data.Resources.Clusters[0].Spec.DeploymentSpec.Name)
-			Expect(state).ShouldNot(Equal("DELETING"), "Error has Occurred")
+			Expect(state).ShouldNot(Equal("DELETING"), "Cluster is being deleted despite the keep annotation")
 		})
 
 	})
