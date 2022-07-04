@@ -63,5 +63,19 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 				},
 			),
 		),
+		Entry("Advanced cluster configuration with no backup and no user", Label("ns-autoscaling"),
+			model.NewTestDataProvider(
+				"operator-ns-autoscaling",
+				model.AProject{},
+				model.NewEmptyAtlasKeyType().UseDefaulFullAccess(),
+				[]string{"data/atlascluster_with_autoscaling.yaml"},
+				[]string{},
+				[]model.DBUser{},
+				30000,
+				[]func(*model.TestDataProvider){
+					actions.Autoscaling,
+				},
+			),
+		),
 	)
 })

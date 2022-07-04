@@ -42,7 +42,6 @@ func DeleteClusterCRD(data *model.TestDataProvider) {
 }
 
 func Autoscaling(data *model.TestDataProvider) {
-	// TODO: This is more integration test but because of ARM problem i need to run it as e2e for now
 	By("Autoscale", func() {
 		// we deployed cluster(default=M30) with Min=M30 and Max=M50 (data/atlascluster_with_autoscaling.yaml)
 		// now we change the tier of the cluster to M40 to simulate the autoscaling
