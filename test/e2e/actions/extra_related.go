@@ -25,7 +25,6 @@ func DeleteClusterCRD(data *model.TestDataProvider) {
 			state := mongocli.GetClusterStateName(data.Resources.ProjectID, data.Resources.Clusters[0].Spec.DeploymentSpec.Name)
 			Expect(state).ShouldNot(Equal("DELETING"), "Cluster is being deleted despite the keep annotation")
 		})
-
 	})
 
 	// Remove annotation so actions.AfterEachFinalCleanup can cleanup successfully

@@ -72,6 +72,18 @@ func DeleteCluster(projectID, clusterName string) *Buffer {
 	return session.Wait().Out
 }
 
+func UpdateCluster(projectID, clusterName string, args ...string) mongodbatlas.Cluster {
+	updateArgs := []string{"atlas", "cluster", "update", clusterName, "--projectId", projectID, "-o", "json"}
+	updateArgs = append(updateArgs, args...)
+
+	session := cli.Execute("mongocli", updateArgs...)
+	EventuallyWithOffset(1, session).Should(gexec.Exit(0))
+	output := session.Out.Contents()
+	var cluster mongodbatlas.Cluster
+	ExpectWithOffset(1, json.Unmarshal(output, &cluster)).ShouldNot(HaveOccurred())
+	return cluster
+}
+
 func IsProjectExist(name string) bool {
 	projects := GetProjects().Results
 	for _, p := range projects {
