@@ -49,7 +49,7 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 			data = test
 			mainCycle(test)
 		},
-		Entry("Trial - Simplest configuration with no backup", Label("ns-crd"),
+		Entry("Simple configuration with keep resource policy annotation on deployment", Label("ns-crd"),
 			model.NewTestDataProvider(
 				"operator-ns-crd",
 				model.AProject{},
