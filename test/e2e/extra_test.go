@@ -63,7 +63,7 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 				},
 			),
 		),
-		Entry("Advanced cluster configuration with no backup and no user", Label("ns-autoscaling"),
+		Entry("Advanced cluster with compute autoscaling", Label("ns-autoscaling"),
 			model.NewTestDataProvider(
 				"operator-ns-autoscaling",
 				model.AProject{},

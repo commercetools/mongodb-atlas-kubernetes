@@ -42,7 +42,7 @@ func DeleteClusterCRD(data *model.TestDataProvider) {
 }
 
 func Autoscaling(data *model.TestDataProvider) {
-	By("Autoscale", func() {
+	By("Simulate autoscaling with changing cluster tier", func() {
 		// we deployed cluster(default=M30) with Min=M30 and Max=M50 (data/atlascluster_with_autoscaling.yaml)
 		// now we change the tier of the cluster to M40 to simulate the autoscaling
 		newTier := "M40"
@@ -73,7 +73,7 @@ func Autoscaling(data *model.TestDataProvider) {
 			"45m", "1m",
 		).Should(Equal("IDLE"), "Kubernetes resource: Cluster status should be IDLE")
 
-		By("Checking the operator doesn't scale down", func() {
+		By("Checking operator won't scale down if 'instanceSize' conflicts with autoscaled size", func() {
 			cluster := mongocli.GetClustersInfo(data.Resources.ProjectID, data.Resources.Clusters[0].Spec.DeploymentSpec.Name)
 			clusterInstanceSize := cluster.ProviderSettings.InstanceSizeName
 			Expect(clusterInstanceSize).Should(Equal(newTier), "Operator shouldn't change the instanceSize with autoscaling enabled")
