@@ -59,7 +59,19 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 			data = test
 			mainCycle(test)
 		},
-		Entry("Keeps cluster in Atlas after deleting Custom Resource Definition", Label("ns-crd"), []func(*model.TestDataProvider){actions.DeleteClusterCRD}),
-		Entry("Keeps cluster in Atlas after deleting AtlasDeployment", Label("ns-crd"), []func(*model.TestDataProvider){actions.DeleteClusterCRD}),
+		Entry("Keeps cluster in Atlas after deleting Custom Resource Definition", Label("ns-crd"), []func(*model.TestDataProvider){
+			actions.Deploy,
+			actions.AnnotateKeep,
+			actions.DeleteClusterCRD,
+			actions.ClusterExists,
+			actions.Deploy,
+		}),
+		Entry("Keeps cluster in Atlas after deleting AtlasDeployment", Label("ns-crd"), []func(*model.TestDataProvider){
+			actions.Deploy,
+			actions.AnnotateKeep,
+			actions.DeleteCluster,
+			actions.ClusterExists,
+			actions.Deploy,
+		}),
 	)
 })
