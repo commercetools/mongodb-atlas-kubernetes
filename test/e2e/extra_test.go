@@ -7,6 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/onsi/gomega/gbytes"
 
+	"github.com/mongodb/mongodb-atlas-kubernetes/pkg/controller/customresource"
 	"github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/actions"
 	kubecli "github.com/mongodb/mongodb-atlas-kubernetes/test/e2e/cli/kubecli"
 
@@ -44,13 +45,9 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 		}
 	})
 
-	DescribeTable("Namespaced operators working only with its own namespace with different configuration",
-		func(test model.TestDataProvider) {
-			data = test
-			mainCycle(test)
-		},
-		Entry("Simple configuration with keep resource policy annotation on deployment", Label("ns-crd"),
-			model.NewTestDataProvider(
+	DescribeTable("Exercise "+customresource.ReconciliationPolicyAnnotation,
+		func(actions []func(*model.TestDataProvider)) {
+			test := model.NewTestDataProvider(
 				"operator-ns-crd",
 				model.AProject{},
 				model.NewEmptyAtlasKeyType().UseDefaulFullAccess(),
@@ -58,10 +55,11 @@ var _ = Describe("Deploy cluster", Label("cluster-extra-ns"), func() {
 				[]string{},
 				[]model.DBUser{},
 				30000,
-				[]func(*model.TestDataProvider){
-					actions.DeleteClusterCRD,
-				},
-			),
-		),
+				actions)
+			data = test
+			mainCycle(test)
+		},
+		Entry("Keeps cluster in Atlas after deleting Custom Resource Definition", Label("ns-crd"), []func(*model.TestDataProvider){actions.DeleteClusterCRD}),
+		Entry("Keeps cluster in Atlas after deleting AtlasDeployment", Label("ns-crd"), []func(*model.TestDataProvider){actions.DeleteClusterCRD}),
 	)
 })
