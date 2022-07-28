@@ -1,0 +1,23 @@
+apiVersion: atlas.mongodb.com/v1
+kind: AtlasDeployment
+metadata:
+  name: atlasdeployment-basic
+spec:
+  projectRef:
+    name: my-project
+  deploymentSpec:
+    name: deployment-basic
+    autoScaling:
+      compute:
+        enabled: true
+        scaleDownEnabled: true
+    providerSettings:
+      instanceSizeName: M30
+      providerName: AWS
+      regionName: US_EAST_1
+      autoScaling:
+        compute:
+          maxInstanceSize: M50
+          minInstanceSize: M30
+  processArgs:
+    javascriptEnabled: true
