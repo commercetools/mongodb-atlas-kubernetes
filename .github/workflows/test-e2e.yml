@@ -167,7 +167,7 @@ jobs:
           wait: 180s
 
       - name: Setup Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: "1.18"
 
